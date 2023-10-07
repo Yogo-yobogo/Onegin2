@@ -1,5 +1,5 @@
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
 #include <ctype.h>
 #include <string.h>
 #include <sys/stat.h>
@@ -9,19 +9,18 @@ int my_fread (char* text_file, FILE* output, int fsize);
 
 int main()
 {
+    char file_name[] = "file.txt";
     FILE* output = fopen ("file.txt", "r");
 
-    char text_str[10000] = {};
-
     int len_file = 0, full_len_file = 0;
-    full_len_file = size_file("file.txt");
-    len_file = my_fread (text_str, output, full_len_file);
-    text_str[len_file] = '\0';
+    full_len_file = size_file(file_name);
     len_file++;
 
     char* text_dynstr = (char*) calloc (len_file, sizeof (char));
 
-    strcpy (text_dynstr, text_str);
+
+    len_file = my_fread (text_dynstr, output, full_len_file);
+    text_dynstr[len_file] = '\0';
 
     int i = 0, num_str = 1;
     while (text_dynstr[i] != '\0')
@@ -41,13 +40,19 @@ int main()
     {
         if (text_dynstr[i] == '\n')
         {
+            text_dynstr[i] = '\0';
             num_str++;
             text[num_str] = text_dynstr + i + 1;
         }
         i++;
     }
 
-    free(text_dynstr);
+
+    for (i = 0; i < num_str; i++)
+        printf ("%s\n", text[i]);
+
+    free (text);
+    free (text_dynstr);
     fclose (output);
 
     return 0;
